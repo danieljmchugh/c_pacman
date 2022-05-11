@@ -1,10 +1,94 @@
-#include <stdio.h>
-#include "gamestate.h"
+#include <stdio.h>      // printf
+#include <unistd.h>     // sleep
+
+#include "../include/gamestate.h"
+#include "../include/player.h"
+
+char test_map[20][20] = {
+    {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
+    {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
+    {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
+    {'#',' ',' ',' ',' ',' ',' ',' ',' ','#','#',' ',' ',' ',' ',' ',' ',' ',' ','#'},
+    {'#',' ','#','#',' ','#','#','#',' ','#','#',' ','#','#','#',' ','#','#',' ','#'},
+    {'#',' ','#','#',' ','#','#','#',' ','#','#',' ','#','#','#',' ','#','#',' ','#'},
+    {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
+    {'#',' ','#','#','#',' ','#',' ','#','#','#','#',' ','#',' ','#','#','#',' ','#'},
+    {'#',' ',' ','#',' ',' ','#',' ',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ','#'},
+    {'#','#',' ','#',' ',' ','#','#','#',' ',' ','#','#','#',' ',' ','#',' ','#','#'},
+    {'#','#',' ',' ',' ',' ','#',' ',' ',' ',' ',' ',' ','#',' ',' ',' ',' ','#','#'},
+    {'#','#','#','#','#',' ','#',' ','#',' ',' ','#',' ','#',' ','#','#','#','#','#'},
+    {'#','#',' ',' ',' ',' ',' ',' ','#',' ',' ','#',' ',' ',' ',' ',' ',' ','#','#'},
+    {'#','#',' ','#','#',' ','#',' ','#',' ',' ','#',' ','#',' ','#','#',' ','#','#'},
+    {'#',' ',' ','#','#',' ','#',' ','#','#','#','#',' ','#',' ','#','#',' ',' ','#'},
+    {'#',' ','#','#',' ',' ','#',' ',' ',' ',' ',' ',' ','#',' ',' ','#','#',' ','#'},
+    {'#',' ','#','#',' ','#','#','#','#','#','#','#','#','#',' ',' ','#','#',' ','#'},
+    {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
+    {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
+    {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'}
+}; 
+
+/*
+    TODO:
+        Will likely user (n)curses for better terminal and input control
+        fix the program halting for new input 
+*/
+
+
+void print_matrix(char map[MAX_ROWS][MAX_COLS]);
+int input();
 
 int main() 
 {
-    // initialize game state
-    // run game (loop is)
-    // Abstract input and pass to updating the gamestate
-    // clean up and exit 
+    player player = init_player(3, 1, 3);
+
+    game_state test_game = init_gamestate(player, test_map);
+    
+    
+    while(1) {
+        printf("\e[1;1H\e[2J"); // clears terminal
+        
+        print_game_state(test_game);
+        int direction = input();
+        test_game = update_gamestate(test_game, direction);
+        sleep(1);
+    }
+ 
+}
+
+int input()
+{
+    char input;
+    
+    scanf(" %c", &input); // space before to ignore whitespaces 
+
+    switch (input) {
+        case 'd':
+            return 1;
+            break;
+        case 'a':
+            return 2;
+            break;
+        case 'w':
+            return 3;
+            break;
+        case 's':
+            return 4;
+            break;
+        default:
+            return 0;
+            break;
+    }
+}
+
+
+void print_matrix(char map[MAX_ROWS][MAX_COLS])
+{
+    for (int row = 0; row < MAX_ROWS; row++) {
+        printf(": ");
+        for (int col = 0; col < MAX_COLS; col++) {
+            
+            printf("%c ", map[row][col]);
+        }
+        printf("\n");
+    }
 }
