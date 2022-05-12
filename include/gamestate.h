@@ -23,11 +23,14 @@ typedef struct {
 game_state init_gamestate(player player, char map[MAX_ROWS][MAX_COLS]);
 
 /* Updates the gamestate based on the input given. Game checks and logic occur in here and returns the new gamestate */
-game_state update_gamestate(game_state current, int direction);
+game_state update_gamestate(game_state current_state, int direction);
 
 /* To free up allocated memory from the heap */
 void destroy_gamestate();
 
-void print_game_state(game_state current_game_state);
+void print_game_state(game_state current_state);
 
+int is_collision(game_state current_state, int direction);
+
+int is_wall_cell(game_state current_state, int x, int y);
 #endif

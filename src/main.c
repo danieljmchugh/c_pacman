@@ -1,8 +1,16 @@
 #include <stdio.h>      // printf
 #include <unistd.h>     // sleep
+#include <ncurses.h>
 
 #include "../include/gamestate.h"
 #include "../include/player.h"
+
+#define REFRESH_DELAY 700000
+#define DIR_RIGHT 1
+#define DIR_LEFT 2
+#define DIR_UP 3
+#define DIR_DOWN 4
+
 
 char test_map[20][20] = {
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
@@ -30,7 +38,8 @@ char test_map[20][20] = {
 /*
     TODO:
         Will likely user (n)curses for better terminal and input control
-        fix the program halting for new input 
+        
+        scanf buffers input until Enter is pressed, find solution to circumnavigate this behaviour
 */
 
 
@@ -39,6 +48,7 @@ int input();
 
 int main() 
 {
+
     player player = init_player(3, 1, 3);
 
     game_state test_game = init_gamestate(player, test_map);
@@ -50,9 +60,9 @@ int main()
         print_game_state(test_game);
         int direction = input();
         test_game = update_gamestate(test_game, direction);
-        sleep(1);
+        usleep(REFRESH_DELAY);
     }
- 
+    
 }
 
 int input()
@@ -63,16 +73,16 @@ int input()
 
     switch (input) {
         case 'd':
-            return 1;
+            return DIR_RIGHT;
             break;
         case 'a':
-            return 2;
+            return DIR_LEFT;
             break;
         case 'w':
-            return 3;
+            return DIR_UP;
             break;
         case 's':
-            return 4;
+            return DIR_DOWN;
             break;
         default:
             return 0;
