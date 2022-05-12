@@ -1,5 +1,5 @@
 #ifndef GHOST_H
-#define GHOST_H_H
+#define GHOST_H
 
 typedef struct {
     int x;
@@ -9,4 +9,8 @@ typedef struct {
     int fleeing;
 } ghost;
 
+ghost init_ghost(int x, int y);
+
+ghost update_ghost(ghost ghost);
+    
 #endif

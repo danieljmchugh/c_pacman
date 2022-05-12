@@ -1,6 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#define enum {DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN};
+
+
 typedef struct {
     int x;
     int y;

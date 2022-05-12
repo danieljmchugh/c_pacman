@@ -6,12 +6,10 @@
 #include "../include/player.h"
 
 #define REFRESH_DELAY 700000
-// #define 
 #define DIR_RIGHT 1
 #define DIR_LEFT 2
 #define DIR_UP 3
 #define DIR_DOWN 4
-
 
 char test_map[20][20] = {
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
@@ -30,7 +28,7 @@ char test_map[20][20] = {
     {'#','#',' ','#','#',' ','#',' ','#',' ',' ','#',' ','#',' ','#','#',' ','#','#'},
     {'#',' ',' ','#','#',' ','#',' ','#','#','#','#',' ','#',' ','#','#',' ',' ','#'},
     {'#',' ','#','#',' ',' ','#',' ',' ',' ',' ',' ',' ','#',' ',' ','#','#',' ','#'},
-    {'#',' ','#','#',' ','#','#','#','#','#','#','#','#','#',' ',' ','#','#',' ','#'},
+    {'#',' ','#','#',' ','#','#','#','#','#','#','#','#','#','#',' ','#','#',' ','#'},
     {'#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#'},
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'}
@@ -40,6 +38,10 @@ char test_map[20][20] = {
     TODO:
         Implement the ghosts, spooky!
         Finish game game state logic
+        Add curses windows so more info can be shown on screen (lives, score, etc.)
+
+    Bugs:
+        Fix pacman moving faster when player spams input 
 */
 
 
@@ -76,30 +78,23 @@ int main()
 
 int get_input()
 {
-    int input;
-    
-    input = getch();     
+    int input = getch();     
 
     switch (input) {
         case 'd':
         case KEY_RIGHT:
             return DIR_RIGHT;
-            break;
         case 'a':
         case KEY_LEFT:
             return DIR_LEFT;
-            break;
         case 'w':
         case KEY_UP:
             return DIR_UP;
-            break;
         case 's':
         case KEY_DOWN:
             return DIR_DOWN;
-            break;
         default:
-            return 0;
-            break;
+            return -1;
     }
 }
 
