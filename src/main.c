@@ -6,6 +6,7 @@
 #include "../include/player.h"
 
 #define REFRESH_DELAY 700000
+// #define 
 #define DIR_RIGHT 1
 #define DIR_LEFT 2
 #define DIR_UP 3
@@ -37,51 +38,63 @@ char test_map[20][20] = {
 
 /*
     TODO:
-        Will likely user (n)curses for better terminal and input control
-        
-        scanf buffers input until Enter is pressed, find solution to circumnavigate this behaviour
+        Implement the ghosts, spooky!
+        Finish game game state logic
 */
 
 
 void print_matrix(char map[MAX_ROWS][MAX_COLS]);
-int input();
+int get_input();
 
 int main() 
 {
+    initscr();                      /* Start curses mode */
+    cbreak();                       /* Disables line buffering, but still allows control characters */
+    noecho();                       /* Disables echoing of characters typed */
+    curs_set(FALSE);                /* Disables blinking curser */
+    keypad(stdscr, TRUE);           /* Allows use of F1,F2, etc. and arrow keys!*/
+    halfdelay(5);                   /* Characters typed are immediately available, but only wait X tenths of a second*/
+
+
 
     player player = init_player(3, 1, 3);
-
-    game_state test_game = init_gamestate(player, test_map);
+    game_state test_game = init_gamestate(player, test_map);    
+   
     
-    
-    while(1) {
-        printf("\e[1;1H\e[2J"); // clears terminal
-        
+    while(TRUE) {
         print_game_state(test_game);
-        int direction = input();
+        
+        
+        int direction = get_input();
         test_game = update_gamestate(test_game, direction);
-        usleep(REFRESH_DELAY);
+        
+        clear();
     }
     
+    endwin();                       /* End curses mode */
 }
 
-int input()
+int get_input()
 {
-    char input;
+    int input;
     
-    scanf(" %c", &input); // space before to ignore whitespaces 
+    input = getch();     
 
     switch (input) {
         case 'd':
+        case KEY_RIGHT:
             return DIR_RIGHT;
             break;
         case 'a':
+        case KEY_LEFT:
             return DIR_LEFT;
             break;
         case 'w':
+        case KEY_UP:
             return DIR_UP;
             break;
         case 's':
+        case KEY_DOWN:
             return DIR_DOWN;
             break;
         default:

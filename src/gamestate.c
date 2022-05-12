@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ncurses.h>
 #include "../include/gamestate.h"
 
 #define DIR_RIGHT 1
@@ -20,10 +21,19 @@ game_state init_gamestate(player player, char map[MAX_ROWS][MAX_COLS])
 
 game_state update_gamestate(game_state current_state, int new_direction) {
     
-    if (!is_collision(current_state, new_direction)) {
-        current_state.pacman.direction = new_direction;
+    // If input is given
+    if (new_direction != 0) {
+        // Check collision with new direction
+        if (!is_collision(current_state, new_direction)) {
+            current_state.pacman.direction = new_direction;
+        }
     }
-    
+   
+    // Check collision with current direction - aka. don't move
+    if (is_collision(current_state, current_state.pacman.direction)) {
+        return current_state;
+    }
+
     switch (current_state.pacman.direction) {
         case DIR_RIGHT:
             current_state.pacman.x++;
@@ -53,23 +63,28 @@ void destroy_gamestate() {}
 void print_game_state(game_state current_state)
 {
     for (int row = 0; row < MAX_ROWS; row++) {
-        printf(": ");
+        printw(": ");
         for (int col = 0; col < MAX_COLS; col++) {
             
             // Pacman
             if (current_state.pacman.y == row && current_state.pacman.x == col) {
                 switch (current_state.pacman.direction) {
                     case DIR_RIGHT:
-                        printf("< ");
+                        addch(ACS_LARROW);
+                        printw(" ");
                         break;
                     case DIR_LEFT:
-                        printf("> ");
+                        addch(ACS_RARROW);
+                        printw(" ");
                         break;
                     case DIR_UP:
-                        printf("v ");
+                        // addch(ACS_DARROW);           /* TODO: ACS_DARROW prints as ꓕ on my terminal, fix*/
+                        printw("V");
+                        printw(" ");
                         break;
                     case DIR_DOWN:
-                        printf("Ʌ ");
+                        addch(ACS_UARROW);
+                        printw(" ");
                         break;
                     default:
                         break;
@@ -77,14 +92,15 @@ void print_game_state(game_state current_state)
             }
             // Matrix
             else {
-                printf("%c ", current_state.map[row][col]);
+                printw("%c ", current_state.map[row][col]);
             }
             
         }
-        printf("\n");
+        printw("\n");
     }
 }
 
+// TODO: figure out a more elegant solution
 int is_collision(game_state current_state, int direction)
 {
     switch (direction) {
