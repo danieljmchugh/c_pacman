@@ -11,7 +11,7 @@
 #define DIR_UP 3
 #define DIR_DOWN 4
 
-int is_collision(game_state current_state, int direction);
+int is_collision(game_state current_state, int x, int y, int direction);
 
 int is_wall_cell(game_state current_state, int x, int y);
 

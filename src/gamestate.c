@@ -28,13 +28,13 @@ game_state update_gamestate(game_state current_state, int new_direction)
     // If input is given
     if (new_direction != -1) {
         // Check collision with new direction
-        if (!is_collision(current_state, new_direction)) {
+        if (!is_collision(current_state, current_state.pacman.x, current_state.pacman.y, new_direction)) {
             current_state.pacman.direction = new_direction;
         }
     }
    
     // Check collision with current direction - aka. don't move
-    if (is_collision(current_state, current_state.pacman.direction)) {
+    if (is_collision(current_state, current_state.pacman.x, current_state.pacman.y, current_state.pacman.direction)) {
         return current_state;
     }
 
