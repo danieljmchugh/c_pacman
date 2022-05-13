@@ -10,7 +10,5 @@ typedef struct {
 } ghost;
 
 ghost init_ghost(int x, int y);
-
-ghost update_ghost(ghost ghost);
     
 #endif

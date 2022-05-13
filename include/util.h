@@ -1,8 +1,9 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <ncurses.h>
 #include "gamestate.h"
-#include "player.h"
+#include "pacman.h"
 #include "ghost.h"
 
 #define DIR_RIGHT 1
@@ -14,5 +15,6 @@ int is_collision(game_state current_state, int direction);
 
 int is_wall_cell(game_state current_state, int x, int y);
 
+void print_game_state(game_state current_state);
     
 #endif

@@ -42,3 +42,47 @@ int is_wall_cell(game_state current_state, int x, int y)
     
     return 0;
 }
+
+void print_game_state(game_state current_state)
+{
+    for (int row = 0; row < MAX_ROWS; row++) {
+        printw(": ");
+        for (int col = 0; col < MAX_COLS; col++) {
+            
+            // Pacman
+            if (current_state.pacman.y == row && current_state.pacman.x == col) {
+                switch (current_state.pacman.direction) {
+                    case DIR_RIGHT:
+                        addch(ACS_LARROW);
+                        printw(" ");
+                        break;
+                    case DIR_LEFT:
+                        addch(ACS_RARROW);
+                        printw(" ");
+                        break;
+                    case DIR_UP:
+                        // addch(ACS_DARROW);           /* TODO: ACS_DARROW prints as ꓕ on my terminal, fix*/
+                        printw("v ");
+                        break;
+                    case DIR_DOWN:
+                        addch(ACS_UARROW);
+                        printw(" ");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            // Ghost
+            else if (current_state.ghost_1.y == row && current_state.ghost_1.x == col) {
+                addch(ACS_DIAMOND);
+                printw(" ");
+            }
+            // Matrix
+            else {
+                printw("%c ", current_state.map[row][col]);
+            }
+            
+        }
+        printw("\n");
+    }
+}

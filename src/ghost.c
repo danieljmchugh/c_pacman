@@ -12,8 +12,3 @@ ghost init_ghost(int x, int y)
 
     return new_ghost;
 }
-
-ghost update_ghost(ghost current_ghost) 
-{
-    
-}

@@ -3,7 +3,8 @@
 #include <ncurses.h>
 
 #include "../include/gamestate.h"
-#include "../include/player.h"
+#include "../include/pacman.h"
+#include "../include/util.h"
 
 #define REFRESH_DELAY 700000
 #define DIR_RIGHT 1
@@ -41,7 +42,7 @@ char test_map[20][20] = {
         Add curses windows so more info can be shown on screen (lives, score, etc.)
 
     Bugs:
-        Fix pacman moving faster when player spams input 
+        Fix pacman moving faster when pacman spams input 
 */
 
 
@@ -59,8 +60,8 @@ int main()
 
 
 
-    player player = init_player(3, 1, 3);
-    game_state test_game = init_gamestate(player, test_map);    
+    pacman pacman = init_pacman(3, 1, 3);
+    game_state test_game = init_gamestate(pacman, test_map);    
    
     
     while(TRUE) {
