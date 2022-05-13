@@ -8,7 +8,7 @@ ghost init_ghost(int x, int y)
     new_ghost.fleeing = 0;
     new_ghost.x = x;
     new_ghost.y = y;
-    new_ghost.direction = 3;
+    new_ghost.direction = DIR_UP;
 
     return new_ghost;
 }

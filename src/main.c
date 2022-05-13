@@ -38,16 +38,13 @@ char test_map[20][20] = {
 /*
     TODO:
         Implement the ghosts, spooky!
+            - prevent ghosts from moving through each other (even if it makes sense)
         Finish game game state logic
         Add curses windows so more info can be shown on screen (lives, score, etc.)
 
     Bugs:
-        Fix pacman moving faster when pacman spams input 
+        Fix game moving faster when spamming input
 */
-
-
-void print_matrix(char map[MAX_ROWS][MAX_COLS]);
-int get_input();
 
 int main() 
 {
@@ -56,58 +53,19 @@ int main()
     noecho();                       /* Disables echoing of characters typed */
     curs_set(FALSE);                /* Disables blinking curser */
     keypad(stdscr, TRUE);           /* Allows use of F1,F2, etc. and arrow keys!*/
-    halfdelay(5);                   /* Characters typed are immediately available, but only wait X tenths of a second*/
-
-
+    halfdelay(2);                   /* Characters typed are immediately available, but only wait X tenths of a second*/
 
     pacman pacman = init_pacman(3, 1, 3);
     game_state test_game = init_gamestate(pacman, test_map);    
    
-    
     while(TRUE) {
         print_game_state(test_game);
         
-        
-        int direction = get_input();
+        int direction = get_input(); /* getch() does an implicit refresh()  */
         test_game = update_gamestate(test_game, direction);
         
         clear();
     }
     
     endwin();                       /* End curses mode */
-}
-
-int get_input()
-{
-    int input = getch();     
-
-    switch (input) {
-        case 'd':
-        case KEY_RIGHT:
-            return DIR_RIGHT;
-        case 'a':
-        case KEY_LEFT:
-            return DIR_LEFT;
-        case 'w':
-        case KEY_UP:
-            return DIR_UP;
-        case 's':
-        case KEY_DOWN:
-            return DIR_DOWN;
-        default:
-            return -1;
-    }
-}
-
-
-void print_matrix(char map[MAX_ROWS][MAX_COLS])
-{
-    for (int row = 0; row < MAX_ROWS; row++) {
-        printf(": ");
-        for (int col = 0; col < MAX_COLS; col++) {
-            
-            printf("%c ", map[row][col]);
-        }
-        printf("\n");
-    }
 }

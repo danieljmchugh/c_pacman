@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include "../include/util.h"
 
 #define DIR_RIGHT 1
@@ -5,8 +6,30 @@
 #define DIR_UP 3
 #define DIR_DOWN 4
 
+int get_input()
+{
+    int input = getch();     
+
+    switch (input) {
+        case 'd':
+        case KEY_RIGHT:
+            return DIR_RIGHT;
+        case 'a':
+        case KEY_LEFT:
+            return DIR_LEFT;
+        case 'w':
+        case KEY_UP:
+            return DIR_UP;
+        case 's':
+        case KEY_DOWN:
+            return DIR_DOWN;
+        default:
+            return -1;
+    }
+}
+
 // TODO: figure out a more elegant solution
-int is_collision(game_state current_state, int x, int y, int direction)
+int is_wall_collision(game_state current_state, int x, int y, int direction)
 {
     switch (direction) {
         case DIR_RIGHT:
@@ -30,7 +53,6 @@ int is_collision(game_state current_state, int x, int y, int direction)
             }
             break;
     }
-
     return 0;
 }
 
@@ -39,7 +61,6 @@ int is_wall_cell(game_state current_state, int x, int y)
     if (current_state.map[y][x] == '#') {
         return 1;
     }
-    
     return 0;
 }
 
@@ -48,7 +69,6 @@ void print_game_state(game_state current_state)
     for (int row = 0; row < MAX_ROWS; row++) {
         printw(": ");
         for (int col = 0; col < MAX_COLS; col++) {
-            
             // Pacman
             if (current_state.pacman.y == row && current_state.pacman.x == col) {
                 switch (current_state.pacman.direction) {
@@ -84,8 +104,18 @@ void print_game_state(game_state current_state)
             else {
                 printw("%c ", current_state.map[row][col]);
             }
-            
         }
         printw("\n");
     }
+}
+
+int is_ghost_collision(ghost primary, ghost secondary, ghost tertiary, ghost quaternary) 
+{
+    if ((primary.x == secondary.x && primary.y == secondary.y) ||
+        (primary.x == tertiary.x && primary.y == tertiary.y) ||
+        (primary.x == quaternary.x && primary.y == quaternary.y)) {
+
+        return 1;
+    }
+    return 0;
 }

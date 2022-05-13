@@ -11,9 +11,14 @@
 #define DIR_UP 3
 #define DIR_DOWN 4
 
-int is_collision(game_state current_state, int x, int y, int direction);
+int get_input();
+
+int is_wall_collision(game_state current_state, int x, int y, int direction);
 
 int is_wall_cell(game_state current_state, int x, int y);
+
+/* A check if primary ghost will collide with any of the other ghosts */
+int is_ghost_collision(ghost primary, ghost secondary, ghost tertiary, ghost quaternary);
 
 void print_game_state(game_state current_state);
     

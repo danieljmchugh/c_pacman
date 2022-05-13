@@ -18,7 +18,7 @@ game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS])
     game_state new_game;
     strcpy(new_game.map, map);
     
-    new_game.finished = 0;
+    new_game.finished = FALSE;
     new_game.pacman = pacman;
     new_game.ghost_1 = init_ghost(9, 12);
     new_game.ghost_2 = init_ghost(9, 13);
@@ -46,13 +46,13 @@ pacman update_pacman(game_state current_state, pacman pacman, int new_direction)
     // If input is given
     if (new_direction != -1) {
         // Check collision with new direction
-        if (!is_collision(current_state, pacman.x, pacman.y, new_direction)) {
+        if (!is_wall_collision(current_state, pacman.x, pacman.y, new_direction)) {
             pacman.direction = new_direction;
         }
     }
    
     // Check collision with current direction - aka. don't move
-    if (is_collision(current_state, pacman.x, pacman.y, pacman.direction)) {
+    if (is_wall_collision(current_state, pacman.x, pacman.y, pacman.direction)) {
         return pacman;
     }
 
@@ -81,14 +81,16 @@ ghost update_ghost(game_state current_state, ghost ghost)
     /* Temporary implementation: ghost will randomize its movement */
 
     srand(time(NULL));
-    int valid_direction = 0; 
+    int valid_direction = FALSE; 
     while (!valid_direction) {
         
         int direction = rand() % (4 + 1 - 1) + 1;
 
-        if (!is_collision(current_state, ghost.x, ghost.y, direction)) {
+        if (!is_wall_collision(current_state, ghost.x, ghost.y, direction)
+            // TODO: Stop ghost collision
+        ) {
             ghost.direction = direction;
-            valid_direction = 1;
+            valid_direction = TRUE;
         }
     }
 
