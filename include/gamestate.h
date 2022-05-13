@@ -14,6 +14,7 @@ typedef struct {
     ghost ghost_1;
     ghost ghost_2;
     ghost ghost_3;
+    ghost ghost_4;
 
     int finished;
 } game_state;
@@ -25,9 +26,9 @@ game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS]);
 /* Updates the gamestate based on the input given. Game checks and logic occur in here and returns the new gamestate */
 game_state update_gamestate(game_state current_state, int direction);
 
-pacman update_pacman();
+pacman update_pacman(game_state current_state, pacman pacman, int new_direction);
 
-ghost update_ghost();
+ghost update_ghost(game_state current_state, ghost ghost);
 
 /* To free up allocated memory from the heap */
 void destroy_gamestate();

@@ -73,7 +73,10 @@ void print_game_state(game_state current_state)
                 }
             }
             // Ghost
-            else if (current_state.ghost_1.y == row && current_state.ghost_1.x == col) {
+            else if (current_state.ghost_1.y == row && current_state.ghost_1.x == col ||
+                     current_state.ghost_2.y == row && current_state.ghost_2.x == col ||
+                     current_state.ghost_3.y == row && current_state.ghost_3.x == col ||
+                     current_state.ghost_4.y == row && current_state.ghost_4.x == col) {
                 addch(ACS_DIAMOND);
                 printw(" ");
             }
