@@ -1,5 +1,5 @@
-#include <stdio.h>      // printf
-#include <unistd.h>     // sleep
+#include <stdio.h>     
+#include <unistd.h>
 #include <ncurses.h>
 
 #include "../include/gamestate.h"
@@ -38,7 +38,6 @@ char test_map[20][20] = {
 /*
     TODO:
         Implement the ghosts, spooky!
-            - prevent ghosts from moving through each other (even if it makes sense)
         Finish game game state logic
         Add curses windows so more info can be shown on screen (lives, score, etc.)
 

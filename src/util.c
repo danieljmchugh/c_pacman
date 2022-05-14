@@ -33,35 +33,27 @@ int is_wall_collision(game_state current_state, int x, int y, int direction)
 {
     switch (direction) {
         case DIR_RIGHT:
-            if (is_wall_cell(current_state, x + 1, y)) {
-                return 1;
-            }
+            if (is_wall_cell(current_state, x + 1, y)) {return TRUE;}
             break;
         case DIR_LEFT:
-            if (is_wall_cell(current_state, x - 1, y)) {
-                return 1;
-            }
+            if (is_wall_cell(current_state, x - 1, y)) {return TRUE;}
             break;
         case DIR_UP:
-            if (is_wall_cell(current_state, x, y - 1)) {
-                return 1;
-            }
+            if (is_wall_cell(current_state, x, y - 1)) {return TRUE;}
             break;
         case DIR_DOWN:
-            if (is_wall_cell(current_state, x, y + 1)) {
-                return 1;
-            }
+            if (is_wall_cell(current_state, x, y + 1)) {return TRUE;}
             break;
     }
-    return 0;
+    return FALSE;
 }
 
 int is_wall_cell(game_state current_state, int x, int y)
 {
     if (current_state.map[y][x] == '#') {
-        return 1;
+        return TRUE;
     }
-    return 0;
+    return FALSE;
 }
 
 void print_game_state(game_state current_state)
@@ -109,13 +101,34 @@ void print_game_state(game_state current_state)
     }
 }
 
-int is_ghost_collision(ghost primary, ghost secondary, ghost tertiary, ghost quaternary) 
+int is_ghost_collision(game_state current_state, ghost ghost, int direction) 
 {
-    if ((primary.x == secondary.x && primary.y == secondary.y) ||
-        (primary.x == tertiary.x && primary.y == tertiary.y) ||
-        (primary.x == quaternary.x && primary.y == quaternary.y)) {
-
-        return 1;
+    switch (direction) {
+        case DIR_RIGHT:
+            if (is_ghost_cell(current_state, ghost.x + 1, ghost.y)) {return TRUE;}
+            break;
+        case DIR_LEFT:
+            if (is_ghost_cell(current_state, ghost.x - 1, ghost.y)) {return TRUE;}
+            break;
+        case DIR_UP:
+            if (is_ghost_cell(current_state, ghost.x, ghost.y - 1)) {return TRUE;}
+            break;
+        case DIR_DOWN:
+            if (is_ghost_cell(current_state, ghost.x, ghost.y + 1)) {return TRUE;}
+            break;
     }
-    return 0;
+    return FALSE;
+}
+
+int is_ghost_cell(game_state current_state, int x, int y)
+{
+    if ((x == current_state.ghost_1.x && y == current_state.ghost_1.y) ||
+        (x == current_state.ghost_2.x && y == current_state.ghost_2.y) ||
+        (x == current_state.ghost_3.x && y == current_state.ghost_3.y) ||
+        (x == current_state.ghost_4.x && y == current_state.ghost_4.y)) {
+        
+        return TRUE;
+    }
+
+    return FALSE;
 }

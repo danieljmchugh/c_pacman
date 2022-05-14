@@ -7,7 +7,6 @@
 #include "../include/ghost.h"
 #include "../include/util.h"
 
-
 #define DIR_RIGHT 1
 #define DIR_LEFT 2
 #define DIR_UP 3
@@ -31,7 +30,6 @@ game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS])
 game_state update_gamestate(game_state current_state, int new_direction) 
 {    
     current_state.pacman = update_pacman(current_state, current_state.pacman, new_direction);
-    // TODO: update ghosts
     current_state.ghost_1 = update_ghost(current_state, current_state.ghost_1);
     current_state.ghost_2 = update_ghost(current_state, current_state.ghost_2);
     current_state.ghost_3 = update_ghost(current_state, current_state.ghost_3);
@@ -82,13 +80,12 @@ ghost update_ghost(game_state current_state, ghost ghost)
 
     srand(time(NULL));
     int valid_direction = FALSE; 
-    while (!valid_direction) {
-        
+    
+    while (!valid_direction) {     
         int direction = rand() % (4 + 1 - 1) + 1;
 
-        if (!is_wall_collision(current_state, ghost.x, ghost.y, direction)
-            // TODO: Stop ghost collision
-        ) {
+        if (!is_wall_collision(current_state, ghost.x, ghost.y, direction) &&
+            !is_ghost_collision(current_state, ghost, direction)) {
             ghost.direction = direction;
             valid_direction = TRUE;
         }

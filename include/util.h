@@ -18,8 +18,12 @@ int is_wall_collision(game_state current_state, int x, int y, int direction);
 int is_wall_cell(game_state current_state, int x, int y);
 
 /* A check if primary ghost will collide with any of the other ghosts */
-int is_ghost_collision(ghost primary, ghost secondary, ghost tertiary, ghost quaternary);
+int is_ghost_collision(game_state current_state, ghost ghost, int direction); 
+
+int is_ghost_cell(game_state current_state, int x, int y);
 
 void print_game_state(game_state current_state);
+
+void move_actor(int x, int y, int direction);
     
 #endif
