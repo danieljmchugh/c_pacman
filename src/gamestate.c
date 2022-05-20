@@ -80,7 +80,7 @@ ghost update_ghost(game_state current_state, ghost ghost)
 
     srand(time(NULL));
     int valid_direction = FALSE; 
-    
+    int tries = 0;
     while (!valid_direction) {     
         int direction = rand() % (4 + 1 - 1) + 1;
 
@@ -89,6 +89,10 @@ ghost update_ghost(game_state current_state, ghost ghost)
             ghost.direction = direction;
             valid_direction = TRUE;
         }
+        else if (tries == 4) {      /* All directions failed */
+            return ghost;
+        }
+        tries++;
     }
 
     switch (ghost.direction) {

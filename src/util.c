@@ -132,3 +132,19 @@ int is_ghost_cell(game_state current_state, int x, int y)
 
     return FALSE;
 }
+
+WINDOW *create_newwin(int height, int width, int start_y, int start_x)
+{
+    WINDOW *local_win;
+
+    local_win = newwin(height, width, start_y, start_x);
+    box(local_win, 0, 0);       /* Gives default vertical/horizontal line characters */
+    wrefresh(local_win);
+
+    return local_win;
+}
+
+WINDOW destroy_win(WINDOW *local_win)
+{
+    
+}

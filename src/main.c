@@ -60,7 +60,7 @@ int main()
     while(TRUE) {
         print_game_state(test_game);
         
-        int direction = get_input(); /* getch() does an implicit refresh()  */
+        int direction = get_input(); /* The getch() function does an implicit refresh()  */
         test_game = update_gamestate(test_game, direction);
         
         clear();
