@@ -22,12 +22,14 @@ int is_ghost_collision(game_state current_state, ghost ghost, int direction);
 
 int is_ghost_cell(game_state current_state, int x, int y);
 
-void print_game_state(game_state current_state);
+void print_gamestate(game_state current_state, WINDOW *game_win);
+
+void draw_borders(WINDOW *screen);
 
 void move_actor(int x, int y, int direction);
 
 WINDOW *create_newwin(int height, int width, int start_y, int start_x);
 
-WINDOW destroy_win(WINDOW *local_win);
+void destroy_win(WINDOW *local_win);
 
 #endif

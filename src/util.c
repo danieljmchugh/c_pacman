@@ -6,9 +6,9 @@
 #define DIR_UP 3
 #define DIR_DOWN 4
 
-int get_input()
+int get_input(WINDOW *game_win)
 {
-    int input = getch();     
+    int input = wgetch(game_win);     
 
     switch (input) {
         case 'd':
@@ -56,29 +56,33 @@ int is_wall_cell(game_state current_state, int x, int y)
     return FALSE;
 }
 
-void print_game_state(game_state current_state)
+void print_gamestate(game_state current_state, WINDOW *game_win)
 {
-    for (int row = 0; row < MAX_ROWS; row++) {
-        printw(": ");
+    int x, y; 
+	getmaxyx(game_win, y, x);
+    draw_borders(game_win);
+    wmove(game_win, 1, 1);
+    for (int row = 0; row < (MAX_ROWS); row++) {
+        wmove(game_win, row + 1, 1);
         for (int col = 0; col < MAX_COLS; col++) {
             // Pacman
             if (current_state.pacman.y == row && current_state.pacman.x == col) {
                 switch (current_state.pacman.direction) {
                     case DIR_RIGHT:
-                        addch(ACS_LARROW);
-                        printw(" ");
+                        waddch(game_win, ACS_LARROW);
+                        wprintw(game_win, " ");
                         break;
                     case DIR_LEFT:
-                        addch(ACS_RARROW);
-                        printw(" ");
+                        waddch(game_win, ACS_RARROW);
+                        wprintw(game_win, " ");
                         break;
                     case DIR_UP:
                         // addch(ACS_DARROW);           /* TODO: ACS_DARROW prints as ꓕ on my terminal, fix*/
-                        printw("v ");
+                        wprintw(game_win, "V ");
                         break;
                     case DIR_DOWN:
-                        addch(ACS_UARROW);
-                        printw(" ");
+                        waddch(game_win, ACS_UARROW);
+                        wprintw(game_win, " ");
                         break;
                     default:
                         break;
@@ -89,16 +93,36 @@ void print_game_state(game_state current_state)
                      current_state.ghost_2.y == row && current_state.ghost_2.x == col ||
                      current_state.ghost_3.y == row && current_state.ghost_3.x == col ||
                      current_state.ghost_4.y == row && current_state.ghost_4.x == col) {
-                addch(ACS_DIAMOND);
-                printw(" ");
+                waddch(game_win, ACS_DIAMOND);
+                wprintw(game_win, " ");
             }
             // Matrix
             else {
-                printw("%c ", current_state.map[row][col]);
+                wprintw(game_win, "%c ", current_state.map[row][col]);
             }
         }
-        printw("\n");
+        wmove(game_win, row + 1, 0);
     }
+}
+
+void draw_borders(WINDOW *screen) { 
+	int x, y, i; 
+	getmaxyx(screen, y, x); 
+	// 4 corners 
+	mvwprintw(screen, 0, 0, "+"); 
+	mvwprintw(screen, y - 1, 0, "+"); 
+	mvwprintw(screen, 0, x - 1, "+"); 
+	mvwprintw(screen, y - 1, x - 1, "+"); 
+	// sides 
+	for (i = 0; i < y; i++) { 
+		mvwprintw(screen, i, 0, "|"); 
+		mvwprintw(screen, i, x - 1, "|"); 
+	} 
+	// top and bottom 
+	for (i = 0; i < x; i++) { 
+		mvwprintw(screen, 0, i, "-"); 
+		mvwprintw(screen, y - 1, i, "-"); 
+	}
 }
 
 int is_ghost_collision(game_state current_state, ghost ghost, int direction) 
@@ -144,7 +168,7 @@ WINDOW *create_newwin(int height, int width, int start_y, int start_x)
     return local_win;
 }
 
-WINDOW destroy_win(WINDOW *local_win)
+void destroy_win(WINDOW *local_win)
 {
-    
+    delwin(local_win);
 }
