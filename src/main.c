@@ -1,4 +1,5 @@
-#include <stdio.h>     
+#include <stdio.h>
+#include <stdlib.h>     
 #include <unistd.h>
 #include <ncurses.h>
 
@@ -13,6 +14,8 @@
 #define DIR_LEFT 2
 #define DIR_UP 3
 #define DIR_DOWN 4
+#define COLOR_PACMAN 1
+#define COLOR_GHOST 2
 
 char test_map[20][20] = {
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
@@ -43,6 +46,7 @@ char test_map[20][20] = {
         Finish game game state logic
         Add curses windows so more info can be shown on screen (lives, score, etc.)
         Add comments to UI code
+        Add colours!
     Bugs:
         Fix game moving faster when spamming input
 */
@@ -58,8 +62,17 @@ int main()
     curs_set(FALSE);                /* Disables blinking curser */
     keypad(stdscr, TRUE);           /* Allows use of F1,F2, etc. and arrow keys!*/
     halfdelay(2);                   /* Characters typed are immediately available, but only wait X tenths of a second*/
+    
+    if (!has_colors()) {
+        endwin();
+        printf("Terminal does not support color\n");
+        exit(1);
+    }
+    
     start_color();                  /* Allow colour attributes */
-
+    init_pair(COLOR_PACMAN, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(COLOR_GHOST, COLOR_RED, COLOR_BLACK);
+    
     height = 22;
     width = 42;
     start_y = (LINES - height) / 2;

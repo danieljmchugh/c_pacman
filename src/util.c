@@ -5,6 +5,8 @@
 #define DIR_LEFT 2
 #define DIR_UP 3
 #define DIR_DOWN 4
+#define COLOR_PACMAN 1
+#define COLOR_GHOST 2
 
 int get_input(WINDOW *game_win)
 {
@@ -61,12 +63,15 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
     int x, y; 
 	getmaxyx(game_win, y, x);
     draw_borders(game_win);
+
+    
     wmove(game_win, 1, 1);
     for (int row = 0; row < (MAX_ROWS); row++) {
         wmove(game_win, row + 1, 1);
         for (int col = 0; col < MAX_COLS; col++) {
             // Pacman
             if (current_state.pacman.y == row && current_state.pacman.x == col) {
+                wattron(game_win, COLOR_PAIR(COLOR_PACMAN));
                 switch (current_state.pacman.direction) {
                     case DIR_RIGHT:
                         waddch(game_win, ACS_LARROW);
@@ -87,13 +92,16 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
                     default:
                         break;
                 }
+                wattroff(game_win, COLOR_PAIR(COLOR_PACMAN));
             }
             // Ghost
             else if (current_state.ghost_1.y == row && current_state.ghost_1.x == col ||
                      current_state.ghost_2.y == row && current_state.ghost_2.x == col ||
                      current_state.ghost_3.y == row && current_state.ghost_3.x == col ||
                      current_state.ghost_4.y == row && current_state.ghost_4.x == col) {
+                wattron(game_win, COLOR_PAIR(COLOR_GHOST));
                 waddch(game_win, ACS_DIAMOND);
+                wattroff(game_win, COLOR_PAIR(COLOR_GHOST));
                 wprintw(game_win, " ");
             }
             // Matrix
