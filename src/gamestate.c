@@ -4,14 +4,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <ncurses.h>
+
 #include "../include/gamestate.h"
 #include "../include/ghost.h"
 #include "../include/util.h"
-
-#define DIR_RIGHT 1
-#define DIR_LEFT 2
-#define DIR_UP 3
-#define DIR_DOWN 4
 
 game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS]) 
 {

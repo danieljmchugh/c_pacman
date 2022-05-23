@@ -7,15 +7,7 @@
 #include "../include/pacman.h"
 #include "../include/util.h"
 
-#define REFRESH_DELAY 700000
-#define MAX_HEIGHT 40
-#define MAX_WIDTH 60
-#define DIR_RIGHT 1
-#define DIR_LEFT 2
-#define DIR_UP 3
-#define DIR_DOWN 4
-#define COLOR_PACMAN 1
-#define COLOR_GHOST 2
+
 
 char test_map[20][20] = {
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},

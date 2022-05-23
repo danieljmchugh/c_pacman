@@ -1,11 +1,6 @@
 #ifndef GHOST_H
 #define GHOST_H
 
-#define DIR_RIGHT 1
-#define DIR_LEFT 2
-#define DIR_UP 3
-#define DIR_DOWN 4
-
 typedef struct {
     int x;
     int y;

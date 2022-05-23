@@ -1,4 +1,5 @@
 #include "../include/ghost.h"
+#include "../include/util.h"
 
 ghost init_ghost(int x, int y) 
 {
