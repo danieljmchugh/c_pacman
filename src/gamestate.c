@@ -14,7 +14,7 @@ game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS])
     game_state new_game;
     strcpy(new_game.map, map);
     
-    new_game.finished = FALSE;
+    new_game.finished = false;
     new_game.pacman = pacman;
     new_game.ghost_1 = init_ghost(9, 12);
     new_game.ghost_2 = init_ghost(9, 13);
@@ -27,7 +27,7 @@ game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS])
 game_state update_gamestate(game_state current_state, int new_direction) 
 {    
     if (current_state.pacman.lives == 0) {
-        current_state.finished = TRUE;
+        current_state.finished = true;
         return current_state;
     }
 
@@ -47,15 +47,15 @@ game_state update_gamestate(game_state current_state, int new_direction)
 
 pacman update_pacman(game_state current_state, pacman pacman, int new_direction)
 {
-    // If input is given
+    /* If input is given */
     if (new_direction != -1) {
-        // Check collision with new direction
+        /* Check collision with new direction */
         if (!is_wall_collision(current_state, pacman.x, pacman.y, new_direction)) {
             pacman.direction = new_direction;
         }
     }
    
-    // Check collision with current direction - aka. don't move
+    /* Check collision with current direction - aka. don't move */
     if (is_wall_collision(current_state, pacman.x, pacman.y, pacman.direction)) {
         return pacman;
     }
@@ -85,7 +85,7 @@ ghost update_ghost(game_state current_state, ghost ghost)
     /* Temporary implementation: ghost will randomize its movement */
 
     srand(time(NULL));
-    int valid_direction = FALSE; 
+    int valid_direction = false; 
     int tries = 0;
     while (!valid_direction) {     
         int direction = rand() % (4 + 1 - 1) + 1;
@@ -93,7 +93,7 @@ ghost update_ghost(game_state current_state, ghost ghost)
         if (!is_wall_collision(current_state, ghost.x, ghost.y, direction) &&
             !is_ghost_collision(current_state, ghost, direction)) {
             ghost.direction = direction;
-            valid_direction = TRUE;
+            valid_direction = true;
         }
         else if (tries == 4) {      /* All directions failed */
             return ghost;

@@ -27,27 +27,27 @@ int is_wall_collision(game_state current_state, int x, int y, int direction)
 {
     switch (direction) {
         case DIR_RIGHT:
-            if (is_wall_cell(current_state, x + 1, y)) {return TRUE;}
+            if (is_wall_cell(current_state, x + 1, y)) {return true;}
             break;
         case DIR_LEFT:
-            if (is_wall_cell(current_state, x - 1, y)) {return TRUE;}
+            if (is_wall_cell(current_state, x - 1, y)) {return true;}
             break;
         case DIR_UP:
-            if (is_wall_cell(current_state, x, y - 1)) {return TRUE;}
+            if (is_wall_cell(current_state, x, y - 1)) {return true;}
             break;
         case DIR_DOWN:
-            if (is_wall_cell(current_state, x, y + 1)) {return TRUE;}
+            if (is_wall_cell(current_state, x, y + 1)) {return true;}
             break;
     }
-    return FALSE;
+    return false;
 }
 
 int is_wall_cell(game_state current_state, int x, int y)
 {
     if (current_state.map[y][x] == '#') {
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 int caught_by_ghost(game_state current_state)
@@ -72,7 +72,7 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
     for (int row = 0; row < (MAX_ROWS); row++) {
         wmove(game_win, row + 1, 1);
         for (int col = 0; col < MAX_COLS; col++) {
-            // Pacman
+            /* Pacman */
             if (current_state.pacman.y == row && current_state.pacman.x == col) {
                 wattron(game_win, COLOR_PAIR(COLOR_PACMAN));
                 switch (current_state.pacman.direction) {
@@ -97,7 +97,7 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
                 }
                 wattroff(game_win, COLOR_PAIR(COLOR_PACMAN));
             }
-            // Ghost
+            /* Ghost */
             else if (current_state.ghost_1.y == row && current_state.ghost_1.x == col ||
                      current_state.ghost_2.y == row && current_state.ghost_2.x == col ||
                      current_state.ghost_3.y == row && current_state.ghost_3.x == col ||
@@ -107,7 +107,7 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
                 wattroff(game_win, COLOR_PAIR(COLOR_GHOST));
                 wprintw(game_win, " ");
             }
-            // Matrix
+            /* Matrix */
             else {
                 wprintw(game_win, "%c ", current_state.map[row][col]);
             }
@@ -123,7 +123,13 @@ void print_info(game_state current_state, WINDOW *info_win)
     draw_borders(info_win);
     mvwprintw(info_win, 1, 1, "Score: %d", current_state.pacman.score);
     mvwprintw(info_win, 1, x - 9, "Lives: %d", current_state.pacman.lives);
-
+    // wmove(info_win, 1, x - 20);
+    // wattron(info_win, COLOR_PAIR(COLOR_PACMAN));
+    // for (int i = 1; i <= current_state.pacman.lives; i++) {
+    //     waddch(info_win, ACS_LARROW);
+    //     // wprintw(info_win, " ");
+    // }
+    // wattroff(info_win, COLOR_PAIR(COLOR_PACMAN));
     wrefresh(info_win);
 }
 
@@ -131,17 +137,13 @@ void draw_borders(WINDOW *win)
 { 
 	int x, y; 
 	getmaxyx(win, y, x); 
-	// 4 corners 
-	mvwprintw(win, 0, 0, "+"); 
-	mvwprintw(win, y - 1, 0, "+"); 
-	mvwprintw(win, 0, x - 1, "+"); 
-	mvwprintw(win, y - 1, x - 1, "+"); 
-	// sides 
+
+	/* Sides */ 
 	for (int i = 0; i < y; i++) { 
 		mvwprintw(win, i, 0, "|"); 
 		mvwprintw(win, i, x - 1, "|"); 
 	} 
-	// top and bottom 
+	/* Top and bottom */
 	for (int i = 0; i < x; i++) { 
 		mvwprintw(win, 0, i, "-"); 
 		mvwprintw(win, y - 1, i, "-"); 
@@ -152,19 +154,19 @@ int is_ghost_collision(game_state current_state, ghost ghost, int direction)
 {
     switch (direction) {
         case DIR_RIGHT:
-            if (is_ghost_cell(current_state, ghost.x + 1, ghost.y)) {return TRUE;}
+            if (is_ghost_cell(current_state, ghost.x + 1, ghost.y)) {return true;}
             break;
         case DIR_LEFT:
-            if (is_ghost_cell(current_state, ghost.x - 1, ghost.y)) {return TRUE;}
+            if (is_ghost_cell(current_state, ghost.x - 1, ghost.y)) {return true;}
             break;
         case DIR_UP:
-            if (is_ghost_cell(current_state, ghost.x, ghost.y - 1)) {return TRUE;}
+            if (is_ghost_cell(current_state, ghost.x, ghost.y - 1)) {return true;}
             break;
         case DIR_DOWN:
-            if (is_ghost_cell(current_state, ghost.x, ghost.y + 1)) {return TRUE;}
+            if (is_ghost_cell(current_state, ghost.x, ghost.y + 1)) {return true;}
             break;
     }
-    return FALSE;
+    return false;
 }
 
 int is_ghost_cell(game_state current_state, int x, int y)
@@ -174,10 +176,10 @@ int is_ghost_cell(game_state current_state, int x, int y)
         (x == current_state.ghost_3.x && y == current_state.ghost_3.y) ||
         (x == current_state.ghost_4.x && y == current_state.ghost_4.y)) {
         
-        return TRUE;
+        return true;
     }
 
-    return FALSE;
+    return false;
 }
 
 WINDOW *create_newwin(int height, int width, int start_y, int start_x)

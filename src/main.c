@@ -7,8 +7,6 @@
 #include "../include/pacman.h"
 #include "../include/util.h"
 
-
-
 char test_map[20][20] = {
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
     {'#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'},
@@ -33,14 +31,14 @@ char test_map[20][20] = {
 }; 
 
 /*
-    TODO:
-        Implement the ghosts, spooky!
-        Finish game game state logic
-        Add curses windows so more info can be shown on screen (lives, score, etc.)
-        Add comments to UI code
-    Bugs:
-        Fix game moving faster when spamming input
-*/
+ *   TODO:
+ *       Implement the ghosts, spooky!
+ *       Finish game game state logic
+ *       Add curses windows so more info can be shown on screen (lives, score, etc.)
+ *       Add comments to UI code
+ *   Bugs:
+ *       Fix game moving faster when spamming input
+ */
 
 int main() 
 {
@@ -50,8 +48,8 @@ int main()
     initscr();                      /* Start curses mode */
     cbreak();                       /* Disables line buffering, but still allows control characters */
     noecho();                       /* Disables echoing of characters typed */
-    curs_set(FALSE);                /* Disables blinking curser */
-    keypad(stdscr, TRUE);           /* Allows use of F1,F2, etc. and arrow keys!*/
+    curs_set(false);                /* Disables blinking curser */
+    keypad(stdscr, true);           /* Allows use of F1,F2, etc. and arrow keys!*/
     halfdelay(2);                   /* Characters typed are immediately available, but only wait X tenths of a second*/
     
     if (!has_colors()) {
@@ -64,24 +62,23 @@ int main()
     init_pair(COLOR_PACMAN, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_GHOST, COLOR_RED, COLOR_BLACK);
     
-    int height = 22;
-    int width = 42;
-    int start_y = (LINES - height) / 2;
-    int start_x = (COLS - width) / 2;
-    game_win = create_newwin(height, width, start_y, start_x);
-    info_win = create_newwin(5, 42, start_y + 22, start_x);
+    int gamewin_y = 22;
+    int gamewin_x = 42;
+
+    int start_y = (LINES - gamewin_y) / 2;
+    int start_x = (COLS - gamewin_x) / 2;
+    game_win = create_newwin(gamewin_y, gamewin_x, start_y, start_x);
+    info_win = create_newwin(5, gamewin_x, start_y + gamewin_y, start_x);
  
     pacman pacman = init_pacman(3, 1, 3);
-    game_state test_game = init_gamestate(pacman, test_map);    
+    game_state game_state = init_gamestate(pacman, test_map);    
         
-    while(!test_game.finished) {
-        print_gamestate(test_game, game_win);
-        print_info(test_game, info_win);
-        
-        int direction = get_input(game_win); /* The getch() function does an implicit refresh()  */
-        test_game = update_gamestate(test_game, direction);
-        
-        wclear(game_win);
+    while(!game_state.finished) {
+        print_gamestate(game_state, game_win);
+        print_info(game_state, info_win);
+        /* The getch() function does an implicit refresh()  */
+        int direction = get_input(game_win); 
+        game_state = update_gamestate(game_state, direction);
     }
     
     destroy_win(game_win);
