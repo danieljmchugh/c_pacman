@@ -24,6 +24,8 @@ int is_ghost_cell(game_state current_state, int x, int y);
 
 void print_gamestate(game_state current_state, WINDOW *game_win);
 
+void print_info(game_state current_state, WINDOW *info_win);
+
 void draw_borders(WINDOW *screen);
 
 void move_actor(int x, int y, int direction);
@@ -31,5 +33,7 @@ void move_actor(int x, int y, int direction);
 WINDOW *create_newwin(int height, int width, int start_y, int start_x);
 
 void destroy_win(WINDOW *local_win);
+
+int caught_by_ghost(game_state current_state);
 
 #endif

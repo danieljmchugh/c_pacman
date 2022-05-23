@@ -46,7 +46,6 @@ char test_map[20][20] = {
         Finish game game state logic
         Add curses windows so more info can be shown on screen (lives, score, etc.)
         Add comments to UI code
-        Add colours!
     Bugs:
         Fix game moving faster when spamming input
 */
@@ -54,7 +53,7 @@ char test_map[20][20] = {
 int main() 
 {
     WINDOW *game_win;
-    int start_x, start_y, width, height; 
+    WINDOW *info_win;
 
     initscr();                      /* Start curses mode */
     cbreak();                       /* Disables line buffering, but still allows control characters */
@@ -73,17 +72,19 @@ int main()
     init_pair(COLOR_PACMAN, COLOR_YELLOW, COLOR_BLACK);
     init_pair(COLOR_GHOST, COLOR_RED, COLOR_BLACK);
     
-    height = 22;
-    width = 42;
-    start_y = (LINES - height) / 2;
-    start_x = (COLS - width) / 2;
+    int height = 22;
+    int width = 42;
+    int start_y = (LINES - height) / 2;
+    int start_x = (COLS - width) / 2;
     game_win = create_newwin(height, width, start_y, start_x);
+    info_win = create_newwin(5, 42, start_y + 22, start_x);
  
     pacman pacman = init_pacman(3, 1, 3);
     game_state test_game = init_gamestate(pacman, test_map);    
-    
-    while(TRUE) {
+        
+    while(!test_game.finished) {
         print_gamestate(test_game, game_win);
+        print_info(test_game, info_win);
         
         int direction = get_input(game_win); /* The getch() function does an implicit refresh()  */
         test_game = update_gamestate(test_game, direction);
@@ -92,6 +93,12 @@ int main()
     }
     
     destroy_win(game_win);
+    destroy_win(info_win);
+
+    mvprintw(LINES/2, COLS/2, "GAME OVER");
+    refresh();
+    sleep(2);
+    
     endwin();                       /* End curses mode */
 }
 

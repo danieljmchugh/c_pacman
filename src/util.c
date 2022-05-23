@@ -10,9 +10,7 @@
 
 int get_input(WINDOW *game_win)
 {
-    int input = wgetch(game_win);     
-
-    switch (input) {
+    switch (wgetch(game_win)) {
         case 'd':
         case KEY_RIGHT:
             return DIR_RIGHT;
@@ -58,13 +56,24 @@ int is_wall_cell(game_state current_state, int x, int y)
     return FALSE;
 }
 
+int caught_by_ghost(game_state current_state)
+{
+    if (current_state.ghost_1.y == current_state.pacman.y && current_state.ghost_1.x == current_state.pacman.x ||
+        current_state.ghost_2.y == current_state.pacman.y && current_state.ghost_2.x == current_state.pacman.x ||
+        current_state.ghost_3.y == current_state.pacman.y && current_state.ghost_3.x == current_state.pacman.x ||
+        current_state.ghost_4.y == current_state.pacman.y && current_state.ghost_4.x == current_state.pacman.x) {
+
+        return true;
+    }
+    return false;
+}
+
 void print_gamestate(game_state current_state, WINDOW *game_win)
 {
     int x, y; 
 	getmaxyx(game_win, y, x);
     draw_borders(game_win);
 
-    
     wmove(game_win, 1, 1);
     for (int row = 0; row < (MAX_ROWS); row++) {
         wmove(game_win, row + 1, 1);
@@ -82,7 +91,7 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
                         wprintw(game_win, " ");
                         break;
                     case DIR_UP:
-                        // addch(ACS_DARROW);           /* TODO: ACS_DARROW prints as ꓕ on my terminal, fix*/
+                        // waddch(game_win, ACS_DARROW);           /* TODO: ACS_DARROW prints as ꓕ on my terminal, fix*/
                         wprintw(game_win, "V ");
                         break;
                     case DIR_DOWN:
@@ -113,23 +122,35 @@ void print_gamestate(game_state current_state, WINDOW *game_win)
     }
 }
 
-void draw_borders(WINDOW *screen) { 
-	int x, y, i; 
-	getmaxyx(screen, y, x); 
+void print_info(game_state current_state, WINDOW *info_win)
+{
+    int x = getmaxx(info_win);
+    
+    draw_borders(info_win);
+    mvwprintw(info_win, 1, 1, "Score: %d", current_state.pacman.score);
+    mvwprintw(info_win, 1, x - 9, "Lives: %d", current_state.pacman.lives);
+
+    wrefresh(info_win);
+}
+
+void draw_borders(WINDOW *win) 
+{ 
+	int x, y; 
+	getmaxyx(win, y, x); 
 	// 4 corners 
-	mvwprintw(screen, 0, 0, "+"); 
-	mvwprintw(screen, y - 1, 0, "+"); 
-	mvwprintw(screen, 0, x - 1, "+"); 
-	mvwprintw(screen, y - 1, x - 1, "+"); 
+	mvwprintw(win, 0, 0, "+"); 
+	mvwprintw(win, y - 1, 0, "+"); 
+	mvwprintw(win, 0, x - 1, "+"); 
+	mvwprintw(win, y - 1, x - 1, "+"); 
 	// sides 
-	for (i = 0; i < y; i++) { 
-		mvwprintw(screen, i, 0, "|"); 
-		mvwprintw(screen, i, x - 1, "|"); 
+	for (int i = 0; i < y; i++) { 
+		mvwprintw(win, i, 0, "|"); 
+		mvwprintw(win, i, x - 1, "|"); 
 	} 
 	// top and bottom 
-	for (i = 0; i < x; i++) { 
-		mvwprintw(screen, 0, i, "-"); 
-		mvwprintw(screen, y - 1, i, "-"); 
+	for (int i = 0; i < x; i++) { 
+		mvwprintw(win, 0, i, "-"); 
+		mvwprintw(win, y - 1, i, "-"); 
 	}
 }
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include <string.h>
 #include <ncurses.h>
 #include "../include/gamestate.h"
@@ -29,13 +30,22 @@ game_state init_gamestate(pacman pacman, char map[MAX_ROWS][MAX_COLS])
 
 game_state update_gamestate(game_state current_state, int new_direction) 
 {    
+    if (current_state.pacman.lives == 0) {
+        current_state.finished = TRUE;
+        return current_state;
+    }
+
+    if (caught_by_ghost(current_state)) {
+        sleep(1);
+        current_state.pacman.lives--;
+    }
+
     current_state.pacman = update_pacman(current_state, current_state.pacman, new_direction);
     current_state.ghost_1 = update_ghost(current_state, current_state.ghost_1);
     current_state.ghost_2 = update_ghost(current_state, current_state.ghost_2);
     current_state.ghost_3 = update_ghost(current_state, current_state.ghost_3);
     current_state.ghost_4 = update_ghost(current_state, current_state.ghost_4);
-    // TODO: check if finished
-
+    
     return current_state;
 }
 
@@ -70,7 +80,7 @@ pacman update_pacman(game_state current_state, pacman pacman, int new_direction)
         default:
             break;
     }
-
+    
     return pacman;
 }
 

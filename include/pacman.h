@@ -6,6 +6,7 @@ typedef struct {
     int y;
     int direction; /* 1: right, 2: left, 3: up, 4: down*/
     int lives;
+    int score;
     int energized;
 } pacman;
 
